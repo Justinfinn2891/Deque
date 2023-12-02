@@ -26,15 +26,19 @@ class Deque {
       // Update frontBlock and blockmap
       ++frontBlock;
       blockmap = newBlockmap;
+      // Update blockSize to the new size
+      ++blockSize;
       // Adjust index to the last position of the new front block
       index = blockSize - 1;
     } else {
       // No need to resize the blockmap, just adjust index
       --index;
     }
+    std::cout<<"front resize complete"<<std::endl;
   }
   
   void resizeBack() {
+    std::cout<<"resizing back"<<std::endl;
     // Need to resize the blockmap by adding a new block at the back
     // Allocate a new blockmap with increased size
     T** newBlockmap = new T*[blockSize + 1];
@@ -49,8 +53,12 @@ class Deque {
     // Increment frontBlock to point to the new back block
     ++frontBlock;
 
+    // Update blockSize to the new size
+    ++blockSize;
+    
     // Reset index to the first position of the new back block
     index = 0;
+    std::cout<<"back resize complete"<<std::endl;
   }
   
   
@@ -64,12 +72,13 @@ class Deque {
   
   ~Deque() {
     // Deallocate memory for each block
-    for (std::size_t i = 0; i <=blockSize; ++i) {
+    for (std::size_t i = 0; i <blockSize; ++i) {
       delete[] blockmap[i];
     }
     
     // Deallocate memory for the blockmap
     delete[] blockmap;
+    std::cout<<"Destroyed Deque"<<std::endl;
   }
 
 
@@ -204,7 +213,7 @@ class Deque {
       // Handle the case where the index is out of bounds
       throw std::out_of_range("Index out of bounds in operator[].");
     }
-
+    
     std::size_t blockNumber = frontBlock;
     std::size_t blockIndex = this->index + index;
     
@@ -215,7 +224,7 @@ class Deque {
     }
     return blockmap[blockNumber][blockIndex];
   }
-  
+
   const T& operator[](std::size_t index) const {
     if (index >= dequeSize) {
       // Handle the case where the index is out of bounds
