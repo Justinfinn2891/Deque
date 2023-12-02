@@ -44,6 +44,7 @@ private:
       // No need to resize the blockmap, just adjust frontIndex
       --frontIndex;
     }
+    std::cout << "Resized front: frontBlock=" << frontBlock << ", frontIndex=" << frontIndex << ", backBlock=" << backBlock << ", backIndex=" << backIndex << std::endl;
   }
 
   void resizeBack() {
@@ -74,6 +75,7 @@ private:
       // No need to resize the blockmap, just adjust backIndex
       ++backIndex;
     }
+    std::cout << "Resized back: frontBlock=" << frontBlock << ", frontIndex=" << frontIndex << ", backBlock=" << backBlock << ", backIndex=" << backIndex << std::endl;
   }
 
 public:
@@ -82,6 +84,7 @@ public:
     // Initialize blockmap with a single block
     blockmap = new T*[1];
     blockmap[0] = new T[blockSize];
+    std::cout << "Deque Created: frontBlock=" << frontBlock << ", frontIndex=" << frontIndex << ", backBlock=" << backBlock << ", backIndex=" << backIndex << std::endl;
   }
 
   ~Deque() {
@@ -91,6 +94,7 @@ public:
     }
     // Deallocate memory for the blockmap array
     delete[] blockmap;
+    std::cout <<"Deque Deleted"<<std::endl;
   }
 
   // Capacity
