@@ -1,6 +1,8 @@
 #ifndef DEQUE_H
 #define DEQUE_H
+
 #include <iostream>
+#include <stdexcept>
 
 template <typename T>
 class Deque {
@@ -12,28 +14,28 @@ private:
   std::size_t backIndex;
   std::size_t blockSize;
   std::size_t dequeSize;
-  
+
   // Helper methods
   void resizeFront() {
     if (frontIndex == 0) {
       if (frontBlock == 0) {
-	// Need to resize the blockmap by adding a new block at the front and adjusting frontBlock accordingly
-	// Allocate a new blockmap with increased size
-	T** newBlockmap = new T*[blockSize + 1];
-	// Copy the existing blockmap to the new one
-	std::copy(blockmap, blockmap + blockSize, newBlockmap + 1);
-	// Allocate a new block at the front
-	newBlockmap[0] = new T[blockSize];
-	// Update frontBlock and blockmap
-            ++frontBlock;
-            blockmap = newBlockmap;
+        // Need to resize the blockmap by adding a new block at the front and adjusting frontBlock accordingly
+        // Allocate a new blockmap with increased size
+        T** newBlockmap = new T*[blockSize + 1];
+        // Copy the existing blockmap to the new one
+        std::copy(blockmap, blockmap + blockSize, newBlockmap + 1);
+        // Allocate a new block at the front
+        newBlockmap[0] = new T[blockSize];
+        // Update frontBlock and blockmap
+        ++frontBlock;
+        blockmap = newBlockmap;
       } else {
-	// Shift all blocks to the right to make space for a new block at the front
-	for (std::size_t i = blockSize; i > 0; --i) {
-	  blockmap[i] = blockmap[i - 1];
-	}
-	// Allocate a new block at the front
-	blockmap[0] = new T[blockSize];
+        // Shift all blocks to the right to make space for a new block at the front
+        for (std::size_t i = blockSize; i > 0; --i) {
+          blockmap[i] = blockmap[i - 1];
+        }
+        // Allocate a new block at the front
+        blockmap[0] = new T[blockSize];
       }
       // Adjust frontIndex and backBlock
       frontIndex = blockSize - 1;
@@ -43,27 +45,27 @@ private:
       --frontIndex;
     }
   }
-  
+
   void resizeBack() {
     if (backIndex == blockSize - 1) {
       if (backBlock == blockSize - 1) {
-	// Need to resize the blockmap by adding a new block at the back and adjusting backBlock accordingly
-	// Allocate a new blockmap with increased size
-	T** newBlockmap = new T*[blockSize + 1];
-	// Copy the existing blockmap to the new one
-	std::copy(blockmap, blockmap + blockSize, newBlockmap);
-	// Allocate a new block at the back
-	newBlockmap[blockSize] = new T[blockSize];
-	// Update backBlock and blockmap
-	++backBlock;
-	blockmap = newBlockmap;
+        // Need to resize the blockmap by adding a new block at the back and adjusting backBlock accordingly
+        // Allocate a new blockmap with increased size
+        T** newBlockmap = new T*[blockSize + 1];
+        // Copy the existing blockmap to the new one
+        std::copy(blockmap, blockmap + blockSize, newBlockmap);
+        // Allocate a new block at the back
+        newBlockmap[blockSize] = new T[blockSize];
+        // Update backBlock and blockmap
+        ++backBlock;
+        blockmap = newBlockmap;
       } else {
-	// Shift all blocks to the left to make space for a new block at the back
-	for (std::size_t i = 0; i < blockSize - 1; ++i) {
-	  blockmap[i] = blockmap[i + 1];
-	}
-	// Allocate a new block at the back
-	blockmap[blockSize - 1] = new T[blockSize];
+        // Shift all blocks to the left to make space for a new block at the back
+        for (std::size_t i = 0; i < blockSize - 1; ++i) {
+          blockmap[i] = blockmap[i + 1];
+        }
+        // Allocate a new block at the back
+        blockmap[blockSize - 1] = new T[blockSize];
       }
       // Adjust backIndex and frontBlock
       backIndex = 0;
@@ -74,18 +76,14 @@ private:
     }
   }
 
-
-
-  
 public:
   // Constructors and Destructor
-  Deque():blockmap(nullptr),frontBlock(0),backBlock(0),frontIndex(0),backIndex(0),blockSize(1),dequeSize(0)
-  {
+  Deque() : blockmap(nullptr), frontBlock(0), backBlock(0), frontIndex(0), backIndex(0), blockSize(1), dequeSize(0) {
     // Initialize blockmap with a single block
     blockmap = new T*[1];
     blockmap[0] = new T[blockSize];
   }
-  
+
   ~Deque() {
     // Deallocate memory for each block
     for (std::size_t i = 0; i <= backBlock; ++i) {
@@ -94,18 +92,18 @@ public:
     // Deallocate memory for the blockmap array
     delete[] blockmap;
   }
-  
+
   // Capacity
   bool empty() const {
     // checks to see if the deque is empty and returns true or false
     return dequeSize == 0;
   }
-  
+
   std::size_t size() const {
     // Checks the size of the deque
     return dequeSize;
   }
-  
+
   // Element access
   T& front() {
     if (empty()) {
@@ -122,7 +120,7 @@ public:
     }
     return blockmap[frontBlock][frontIndex];
   }
-  
+
   T& back() {
     if (empty()) {
       // Handle the case where the deque is empty
@@ -138,7 +136,7 @@ public:
     }
     return blockmap[backBlock][backIndex];
   }
-  
+
   // Modifiers
   void push_front(const T& value) {
     // Check if the front block is full
@@ -153,7 +151,7 @@ public:
     // Increment the deque size
     ++dequeSize;
   }
-  
+
   void pop_front() {
     if (empty()) {
       // Handle the case where the deque is empty
@@ -169,7 +167,7 @@ public:
       resizeFront();
     }
   }
-  
+
   void push_back(const T& value) {
     // Check if the back block is full
     if (backIndex == blockSize - 1) {
@@ -183,7 +181,7 @@ public:
     // Increment the deque size
     ++dequeSize;
   }
-  
+
   void pop_back() {
     if (empty()) {
       // Handle the case where the deque is empty
@@ -199,7 +197,7 @@ public:
       resizeBack();
     }
   }
-  
+
   // Operator overloading
   T& operator[](std::size_t index) {
     if (index >= dequeSize) {
@@ -207,14 +205,14 @@ public:
       throw std::out_of_range("Index out of bounds in operator[].");
     }
 
-    std::size_t blockIndex = frontIndex + index;
     std::size_t blockNumber = frontBlock;
-    
+    std::size_t blockIndex = frontIndex + index;
+
     // Adjust blockNumber and blockIndex if the index spans multiple blocks
     while (blockIndex >= blockSize) {
       blockIndex -= blockSize;
       ++blockNumber;
-    }   
+    }
     return blockmap[blockNumber][blockIndex];
   }
 
@@ -224,9 +222,9 @@ public:
       throw std::out_of_range("Index out of bounds in operator[].");
     }
 
-    std::size_t blockIndex = frontIndex + index;
     std::size_t blockNumber = frontBlock;
-    
+    std::size_t blockIndex = frontIndex + index;
+
     // Adjust blockNumber and blockIndex if the index spans multiple blocks
     while (blockIndex >= blockSize) {
       blockIndex -= blockSize;
@@ -236,4 +234,4 @@ public:
   }
 };
 
-#endif //DEQUE_H
+#endif // DEQUE_H

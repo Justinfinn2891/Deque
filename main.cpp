@@ -41,7 +41,7 @@ void automatedTests() {
     cout << "Deque size after pops: " << myDeque.size() << endl;
 
     // Perform a large number of [] access operations
-    for (size_t i = 0; i < myDeque.size(); ++i) {
+    for ( size_t i = 0; i < myDeque.size(); ++i) {
         int index = rand() % myDeque.size();
         // Accessing elements using operator[]
         int element = myDeque[index];
