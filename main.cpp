@@ -6,47 +6,52 @@
 
 using namespace std;
 
-// Function to perform automated testing
 void automatedTests() {
-    // Seed the random number generator
-    srand(static_cast<unsigned>(time(nullptr)));
-
-    // Create a deque of integers
-    Deque<int> myDeque;
-
-    // Perform a large number of pushes to both sides
-    const int numOperations = 2;
-    for (int i = 0; i < numOperations; i++) {
-        int value = rand() % 100; // Random value between 0 and 99
-        if (i % 2 == 0) {
-            myDeque.push_front(value);
-        } else {
-            myDeque.push_back(value);
-        }
+  // Seed the random number generator
+  srand(static_cast<unsigned>(time(nullptr)));
+  
+  // Create a deque of integers
+  Deque<int> myDeque;
+  
+  // Perform a large number of pushes to both sides
+  const int numOperations = 10;
+  
+  for (int i = 0; i < numOperations; i++) {
+    int value = rand() % 100; // Random value between 0 and 99
+    if (i % 2 == 0) {
+      myDeque.push_front(value);
+    } else {
+      myDeque.push_back(value);
     }
-
-    // Display the deque size after pushes
-    cout << "Deque size after pushes: " << myDeque.size() << endl;
-
+  }
+  
+  // Display the deque size after pushes
+  cout << "Deque size after pushes: " << myDeque.size() << endl;
+    
     // Perform a large number of pops from both sides
     for (int i = 0; i < numOperations / 2; i++) {
-        if (i % 2 == 0) {
-            myDeque.pop_front();
-        } else {
-            myDeque.pop_back();
-        }
+      if (!myDeque.empty()) {
+	if (i % 2 == 0) {
+	  myDeque.pop_front();
+	} else {
+	  myDeque.pop_back();
+	}
+      }
     }
-
+    
     // Display the deque size after pops
     cout << "Deque size after pops: " << myDeque.size() << endl;
-
+    
     // Perform a large number of [] access operations
-    for ( size_t i = 0; i < myDeque.size(); i++) {
-        int index = rand() % myDeque.size();
-        // Accessing elements using operator[]
-        int element = myDeque[index];
-        // Do something with the element to ensure it's working
-        cout << "Accessed element at index " << index << ": " << element << endl;
+    for (int i = 0; i < numOperations; i++) {
+      if (!myDeque.empty()) {
+	// Generate a random index within the current size of the deque
+	int index = rand() %myDeque.size();
+	// Accessing elements using operator[]
+	int element = myDeque[index];
+	// Do something with the element to ensure it's working
+	cout << "Accessed element at index " << index << ": " << element << endl;
+      }
     }
 }
 
