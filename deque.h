@@ -19,10 +19,12 @@ class Deque {
         // Need to resize the blockmap by adding a new block at the front
         // Allocate a new blockmap with increased size
         T** newBlockmap = new T*[blockSize + 1];
-        // Copy the existing blockmap to the new one
-        std::copy(blockmap, blockmap + blockSize, newBlockmap + 1);
         // Allocate a new block at the front
         newBlockmap[0] = new T[blockSize];
+        // Copy the existing blockmap to the new one, starting from the second block
+        std::copy(blockmap, blockmap + blockSize, newBlockmap + 1);
+        // Copy elements from the last block of the old blockmap to the first block of the new blockmap
+        std::copy(blockmap[frontBlock] + index, blockmap[frontBlock] + blockSize, newBlockmap[0]);
         // Update frontBlock and blockmap
         ++frontBlock;
         blockmap = newBlockmap;
@@ -42,28 +44,27 @@ void resizeBack() {
     // Need to resize the blockmap by adding a new block at the back
     // Allocate a new blockmap with increased size
     T** newBlockmap = new T*[blockSize + 1];
+    // Allocate a new block at the back
+    newBlockmap[blockSize] = new T[blockSize];
     // Copy the existing blockmap to the new one
     std::copy(blockmap, blockmap + blockSize, newBlockmap);
-    // Allocate a new block at the back
-    newBlockmap[blockSize - 1] = new T[blockSize];
-
+    // Copy elements from the first block of the old blockmap to the last block of the new blockmap
+    std::copy(blockmap[frontBlock], blockmap[frontBlock] + index + 1, newBlockmap[blockSize - 1]);
     // Update blockmap to point to the new blockmap
     blockmap = newBlockmap;
-
     // Increment frontBlock to point to the new back block
     ++frontBlock;
-
     // Update blockSize to the new size
     ++blockSize;
-
     // Reset index to the first position of the new back block
     index = 0;
     std::cout << "back resize complete" << std::endl;
 }
+
   
   
 public:
-  // Constructors and Destructor
+  // Constructor and Destructor
   Deque() : blockmap(nullptr), frontBlock(0), index(0), blockSize(1), dequeSize(0) {
     // Initialize blockmap with a single block
     blockmap = new T*[1];
