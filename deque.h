@@ -69,6 +69,11 @@ public:
     // Initialize blockmap with a single block
     blockmap = new T*[1];
     blockmap[0] = new T[blockSize];
+
+      // Initialize the memory inside the block
+    for (std::size_t i = 0; i < blockSize; ++i) {
+        blockmap[0][i] = T();  // Default initialize the elements
+    }
   }
   
   ~Deque() {
@@ -170,14 +175,20 @@ public:
       // If the back block is full, resize the deque to make space at the back
       resizeBack();
     }
-    else {
       // Move the index to the right
       ++index;
+
       // Insert the new value
-      blockmap[frontBlock][index] = value;
-      // Increment the deque size
-      ++dequeSize;
-    }
+      // Make sure to check if index is still within bounds after incrementing
+      if (index < blockSize) {
+        blockmap[frontBlock][index] = value;
+        // Increment the deque size
+        ++dequeSize;
+      } else {
+        // Handle the case where index is out of bounds after incrementing
+        // This could happen after resizeBack
+        throw std::out_of_range("Index out of bounds after push_back.");
+      } 
   }
 
   void pop_back() {
@@ -223,6 +234,11 @@ public:
         blockIndex -= blockSize;
         ++blockNumber;
     }
+
+    std::cout << "operator[] access: index = " << index
+              << ", blockNumber = " << blockNumber
+	      << ", blockIndex = " << blockIndex
+	      << ", accessed value = " << blockmap[blockNumber][blockIndex] << std::endl;
     
     return blockmap[blockNumber][blockIndex];
   }
@@ -241,6 +257,11 @@ public:
         blockIndex -= blockSize;
         ++blockNumber;
     }
+
+    std::cout << "operator[] access: index = " << index
+              << ", blockNumber = " << blockNumber
+              << ", blockIndex = " << blockIndex
+	      << ", accessed value = " << blockmap[blockNumber][blockIndex] << std::endl;
     
     return blockmap[blockNumber][blockIndex];
   }

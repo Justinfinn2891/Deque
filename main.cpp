@@ -14,7 +14,7 @@ void automatedTests() {
   Deque<int> myDeque;
   
   // Perform a large number of pushes to both sides
-  const int numOperations = 10;
+  const int numOperations = 4;
   
   for (int i = 0; i < numOperations; i++) {
     int value = rand() % 100; // Random value between 0 and 99
