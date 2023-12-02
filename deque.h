@@ -45,7 +45,7 @@ class Deque {
     // Copy the existing blockmap to the new one
     std::copy(blockmap, blockmap + blockSize, newBlockmap);
     // Allocate a new block at the back
-    newBlockmap[blockSize] = new T[blockSize];
+    newBlockmap[blockSize-1] = new T[blockSize];
     
     // Update blockmap to point to the new blockmap
     blockmap = newBlockmap;
