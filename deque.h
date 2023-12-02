@@ -9,7 +9,7 @@ class Deque {
  private:
   T** blockmap;
   std::size_t frontBlock;
-  std::size_t index; // Single index variable to represent both front and back indices
+  std::size_t index; // Single index variable to represent both front and back indexes
   std::size_t blockSize;
   std::size_t dequeSize;
   
@@ -35,24 +35,24 @@ class Deque {
   }
   
   void resizeBack() {
-    if (index == blockSize - 1) {
-      // Need to resize the blockmap by adding a new block at the back
-      // Allocate a new blockmap with increased size
-      T** newBlockmap = new T*[blockSize + 1];
-      // Copy the existing blockmap to the new one
-      std::copy(blockmap, blockmap + blockSize, newBlockmap);
-      // Allocate a new block at the back
-      newBlockmap[blockSize] = new T[blockSize];
-      // Update frontBlock and blockmap
-      ++frontBlock;
-      blockmap = newBlockmap;
-      // Reset index to the first position of the new back block
-      index = 0;
-    } else {
-      // No need to resize the blockmap, just adjust index
-      ++index;
-    }
+    // Need to resize the blockmap by adding a new block at the back
+    // Allocate a new blockmap with increased size
+    T** newBlockmap = new T*[blockSize + 1];
+    // Copy the existing blockmap to the new one
+    std::copy(blockmap, blockmap + blockSize, newBlockmap);
+    // Allocate a new block at the back
+    newBlockmap[blockSize] = new T[blockSize];
+    
+    // Update blockmap to point to the new blockmap
+    blockmap = newBlockmap;
+    
+    // Increment frontBlock to point to the new back block
+    ++frontBlock;
+
+    // Reset index to the first position of the new back block
+    index = 0;
   }
+  
   
  public:
   // Constructors and Destructor
@@ -64,10 +64,16 @@ class Deque {
   
   ~Deque() {
     // Deallocate memory for each block
-    for (std::size_t i = 0; i <= frontBlock; ++i) {
+    for (std::size_t i = 0; i <=blockSize; ++i) {
       delete[] blockmap[i];
     }
+    
+    // Deallocate memory for the blockmap
+    delete[] blockmap;
   }
+
+
+
   
   // Capacity
   bool empty() const {
@@ -102,15 +108,19 @@ class Deque {
       // Handle the case where the deque is empty
       throw std::out_of_range("Deque is empty. Cannot access back element.");
     }
-    return blockmap[frontBlock][index];
-    }
+    // Adjust index to the last position of the current back block
+    std::size_t adjustedIndex = (index == 0) ? blockSize - 1 : index - 1;
+    return blockmap[frontBlock][adjustedIndex];
+  }
 
   const T& back() const {
     if (empty()) {
       // Handle the case where the deque is empty
       throw std::out_of_range("Deque is empty. Cannot access back element.");
     }
-    return blockmap[frontBlock][index];
+    // Adjust index to the last position of the current back block
+    std::size_t adjustedIndex = (index == 0) ? blockSize - 1 : index - 1;
+    return blockmap[frontBlock][adjustedIndex];
   }
 
   // Modifiers
@@ -150,28 +160,42 @@ class Deque {
       // If the back block is full, resize the deque to make space at the back
       resizeBack();
     }
-    // Move the index to the right
-    ++index;
-    // Insert the new value
-    blockmap[frontBlock][index] = value;
-    // Increment the deque size
-    ++dequeSize;
+    else {
+      // Move the index to the right
+      ++index;
+      // Insert the new value
+      blockmap[frontBlock][index] = value;
+      // Increment the deque size
+      ++dequeSize;
+    }
   }
-  
+
   void pop_back() {
     if (empty()) {
       // Handle the case where the deque is empty
       throw std::out_of_range("Deque is empty. Cannot perform pop_back.");
     }
+    
     // Move the index to the left
     --index;
+    
     // Decrement the deque size
     --dequeSize;
+    
     // Check if the back block is empty after the pop operation
     if (index == static_cast<std::size_t>(-1)) {
       // If the back block is empty, resize the deque to remove the empty block
       resizeBack();
+      // Reset index to the last position of the new back block
+      index = blockSize - 1;
     }
+
+        // Adjust frontBlock if it goes below 0 after resizeBack
+    if (frontBlock > 0 && index == 0) {
+        --frontBlock;
+        index = blockSize - 1;
+    }
+
   }
   
   // Operator overloading

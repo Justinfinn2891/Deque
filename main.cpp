@@ -16,7 +16,7 @@ void automatedTests() {
 
     // Perform a large number of pushes to both sides
     const int numOperations = 2;
-    for (int i = 0; i < numOperations; ++i) {
+    for (int i = 0; i < numOperations; i++) {
         int value = rand() % 100; // Random value between 0 and 99
         if (i % 2 == 0) {
             myDeque.push_front(value);
@@ -29,7 +29,7 @@ void automatedTests() {
     cout << "Deque size after pushes: " << myDeque.size() << endl;
 
     // Perform a large number of pops from both sides
-    for (int i = 0; i < numOperations / 2; ++i) {
+    for (int i = 0; i < numOperations / 2; i++) {
         if (i % 2 == 0) {
             myDeque.pop_front();
         } else {
@@ -41,7 +41,7 @@ void automatedTests() {
     cout << "Deque size after pops: " << myDeque.size() << endl;
 
     // Perform a large number of [] access operations
-    for ( size_t i = 0; i < myDeque.size(); ++i) {
+    for ( size_t i = 0; i < myDeque.size(); i++) {
         int index = rand() % myDeque.size();
         // Accessing elements using operator[]
         int element = myDeque[index];
