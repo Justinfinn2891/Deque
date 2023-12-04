@@ -1,5 +1,7 @@
 +========================================================+
-In this assignment we made an implementation of the Deque!
+
+In this assignment we made an implementation of the Deque using a dynamic double array!
+
 +========================================================+
 
 # Files used:

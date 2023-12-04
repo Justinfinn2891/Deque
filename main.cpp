@@ -1,63 +1,51 @@
 #include <iostream>
-#include <cstdlib> // for rand()
-#include <ctime>   // for srand()
+#include <cstdlib>  // For rand() function
 
 #include "deque.h"
 
-using namespace std;
+template <typename T>
+void stressTest(Deque<T>& myDeque, int numOperations) {
+    for (int i = 0; i < numOperations; ++i) {
+        int operationType = rand() % 4; // 0: push, 1: pop, 2: access front, 3: access random index
+        if (operationType == 0) {
+            int pushType = rand() % 2;  // 0: push_front, 1: push_back
+            int value = rand() % 1000;  // Random value for push
 
-void automatedTests() {
-  // Seed the random number generator
-  srand(static_cast<unsigned>(time(nullptr)));
-  
-  // Create a deque of integers
-  Deque<int> myDeque;
-  
-  // Perform a large number of pushes to both sides
-  const int numOperations = 4;
-  
-  for (int i = 0; i < numOperations; i++) {
-    int value = rand() % 100; // Random value between 0 and 99
-    if (i % 2 == 0) {
-      myDeque.push_front(value);
-    } else {
-      myDeque.push_back(value);
-    }
-  }
-  
-  // Display the deque size after pushes
-  cout << "Deque size after pushes: " << myDeque.size() << endl;
-    
-    // Perform a large number of pops from both sides
-    for (int i = 0; i < numOperations / 2; i++) {
-      if (!myDeque.empty()) {
-	if (i % 2 == 0) {
-	  myDeque.pop_front();
-	} else {
-	  myDeque.pop_back();
-	}
-      }
-    }
-    
-    // Display the deque size after pops
-    cout << "Deque size after pops: " << myDeque.size() << endl;
-    
-    // Perform a large number of [] access operations
-    for (int i = 0; i < numOperations; i++) {
-      if (!myDeque.empty()) {
-	// Generate a random index within the current size of the deque
-	int index = rand() %myDeque.size();
-	// Accessing elements using operator[]
-	int element = myDeque[index];
-	// Do something with the element to ensure it's working
-	cout << "Accessed element at index " << index << ": " << element << endl;
-      }
+            if (pushType == 0) {
+                myDeque.push_front(value);
+            } else {
+                myDeque.push_back(value);
+            }
+        } else if (operationType == 1) {
+            int popType = rand() % 2;  // 0: pop_front, 1: pop_back
+
+            if (popType == 0) {
+                myDeque.pop_front();
+            } else {
+                myDeque.pop_back();
+            }
+        } else if (operationType == 2) {
+            if (!myDeque.empty()) {
+                T frontValue = myDeque.front();
+		 std::cout << "Accessed front element: " << frontValue << std::endl;
+            }
+        } else {
+            if (!myDeque.empty()) {
+                int randomIndex = rand() % myDeque.getSize();
+                T value = myDeque[randomIndex];
+		std::cout << "Accessed element at random index " << randomIndex << ": " << value << std::endl;
+            }
+        }
     }
 }
 
 int main() {
-    automatedTests();
+    const int numOperations = 1000;  // Number of Operatons
+    Deque<int> myDeque;
+
+    stressTest(myDeque, numOperations);
+
+    std::cout << "Size after stress test: " << myDeque.getSize() << std::endl;
+
     return 0;
 }
-
-//the randomized function was pieced together using this website: https://www.cs.fsu.edu/~myers/c++/notes/rand.html
