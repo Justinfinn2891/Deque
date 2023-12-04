@@ -6,7 +6,6 @@ In this assignment we made an implementation of the Deque!
 --------------------
 * - deque.h This file contains the implementation of the deque template class.
 * - the file also contains the method functions for push/pop front and push/pop back, empty, size, and operator[]
-
 * - main.cpp Driver file that contains the deque class 
 
 # How to Use:
