@@ -1,9 +1,30 @@
+/**
+ * @file main.cpp
+ * @author Justin Finn and Gabriel Speer
+ * @date 2023-12-04
+ * @brief driver file
+ * 
+ * driver file containg the main function and hte stressTest function
+ */
+
 #include <iostream>
 #include <cstdlib>  // For rand() function
 
 #include "deque.h"
 
 template <typename T>
+
+
+/**
+ * used for stress testing
+ *
+ * @param Deque<T>& myDeque 
+ * @param int numOperations 
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void stressTest(Deque<T>& myDeque, int numOperations) {
     for (int i = 0; i < numOperations; ++i) {
         int operationType = rand() % 4; // 0: push, 1: pop, 2: access front, 3: access random index

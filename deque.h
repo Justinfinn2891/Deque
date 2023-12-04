@@ -1,11 +1,31 @@
+/**
+ * @file deque.h
+ * @author Justin Finn and Gabriel Speer
+ * @date 2023-12-04
+ * @brief .h file containing the template and Deque class 
+ * 
+ * file containing template and deque class 
+ */
+
 #ifndef DEQUE_H
 #define DEQUE_H
 
 #include <iostream>
 
 template <typename T>
+
+
+
+/**
+ * deque class that holds the methods for deque
+ *
+ * @class Deque deque.h "Deque/deque.h"
+ * @brief class holding the variables in methods for deque 
+ *
+ */
 class Deque {
 private:
+  // VARIABLES
     T** blockmap;
     int size;          // Total number of elements in the deque
     int mapsize;       // Number of blocks in the double array
@@ -14,11 +34,27 @@ private:
     int firstElement;  // Index of the first element in the deque
 
 public:
-    // Constructor
-    Deque() : blockmap(nullptr), size(0), mapsize(0), firstblock(0), firstElement(0) {}
+    
 
-    // Destructor
-    ~Deque() {
+/**
+ * constructor
+ *
+ * @pre 
+ * @post 
+ * 
+ */
+  Deque() : blockmap(nullptr), size(0), mapsize(0), firstblock(0), firstElement(0) {}
+
+  
+
+/**
+ * destructor
+ *
+ * @pre 
+ * @post 
+ * 
+ */
+  ~Deque() {
         if (blockmap != nullptr) {
             for (int i = 0; i < mapsize; ++i) {
                 delete[] blockmap[i];
@@ -28,6 +64,16 @@ public:
     }
 
     // Add element to the front
+
+/**
+ * adds element to the front
+ *
+ * @param const T& value 
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
     void push_front(const T& value) {
         if (blocksize == 0) {
             // Initial allocation
@@ -57,6 +103,15 @@ public:
     }
 
     // Remove element from the front
+
+/**
+ * removes element from the front
+ *
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
     void pop_front() {
         if (empty()) {
             std::cerr << "Deque is empty. Cannot pop from the front." << std::endl;
@@ -78,6 +133,16 @@ public:
     }
 
     // Add element to the back
+
+/**
+ * pushes element to the back
+ *
+ * @param const T& value 
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
     void push_back(const T& value) {
         if (blocksize == 0) {
             // Initial allocation
@@ -102,7 +167,17 @@ public:
     }
 
     // Remove element from the back
-    void pop_back() {
+
+/**
+ * removes element from the back
+ *
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
+
+  void pop_back() {
         if (empty()) {
             std::cerr << "Deque is empty. Cannot pop from the back." << std::endl;
             return;

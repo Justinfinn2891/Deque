@@ -30,5 +30,6 @@ In this assignment we made an implementation of the Deque using a dynamic double
 - Helped make .h and driver file
 - In charge of making the Makefile
 - Added in the comments / Created the README.md
-
+- In charge of the brainstorm/idea process
+- worked on the template
 
